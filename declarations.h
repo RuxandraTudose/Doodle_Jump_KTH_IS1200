@@ -82,6 +82,7 @@ const uint8_t const stair[128];
 const uint8_t const shrek[128];
 const uint8_t const ground[128];
 const uint8_t const no_ground[128];
+uint8_t display[4][128];
 
 //menu
 void start_screen();
@@ -90,5 +91,6 @@ void initports();
 void jump();
 void start_game();
 void init_game();
+void gamemap();
 //void update_Shrek_and_Stairs();
 

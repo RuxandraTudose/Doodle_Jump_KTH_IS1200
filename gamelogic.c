@@ -58,24 +58,29 @@ void initports( void ) //called once
 void start_game()
 {
   init_game();
-  initports();
-
-  while (1)
+  
+  while (GAME.running)
   {
     //Step 1: read inputs
+    if(getbtns() & 0b100 && GAME.jumping!=1)
+		{
+			GAME.jumping = 1;
+		}
+    if(getbtns() & 0b010)
+		{
+      GAME.shooting = 1;
+    }
+    gamemap();
     //Step 2: (decice what will happen)
     //Step 3: Draw graphics to buffer
     //Step4 : Send contents of buffer to display
-    //Step 5: Delay
-
-
-    
+    //Step 5: Delay 
   }
 }
 
 void init_game()
 {
-  DOODLE.x = 0;
+  DOODLE.x = 20;
   DOODLE.y = 0;
   DOODLE.WIDTH = 10;
   DOODLE.HEIGHT = 8;
@@ -98,7 +103,7 @@ void init_game()
   GAME.jumping = 0;
   GAME.game_over = 0;
   GAME.shooting = 0;
-  GAME.running = 0;
+  GAME.running = 1;
   GAME.score = 0;
 }
 
