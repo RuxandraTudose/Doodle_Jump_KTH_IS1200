@@ -23,6 +23,7 @@ void start_screen()
 		{
 			print_empty_screen();
 			//call function to start game
+			initports();
 			start_game();		
 			MENU = 0;
 		}

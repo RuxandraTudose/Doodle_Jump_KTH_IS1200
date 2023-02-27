@@ -8,7 +8,7 @@
    For copyright and licensing, see file COPYING */
 
 /* Declare display-related functions from displayfuncions.c */
-void display_image(int x, int page, const uint8_t *data);
+void display_image(int x, const uint8_t *data);
 void display_init(void);
 void display_string(int line, char *s);
 void display_update(void);
@@ -85,7 +85,6 @@ const uint8_t const no_ground[128];
 
 //menu
 void start_screen();
-void new_display_image(int x, int page) ;
 void print_empty_screen();
 void initports();
 void jump();

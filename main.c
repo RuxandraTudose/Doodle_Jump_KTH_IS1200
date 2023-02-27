@@ -54,10 +54,10 @@ int main(void) {
 	/* SPI2CON bit ON = 1; */
 	SPI2CONSET = 0x8000;
 	
-	//start_screen();
-	display_init();
-	gamemap();
-	initports(); /* Do any lab-specific initialization */
+	start_screen();
+	//display_init();
+	//gamemap();
+	//initports(); /* Do any lab-specific initialization */
 
 
 	//start game;

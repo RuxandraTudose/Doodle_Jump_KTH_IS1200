@@ -145,10 +145,10 @@ void display_string(int line, char *s) {
 			textbuffer[line][i] = ' ';
 }
 
-void display_image(int x, int page, const uint8_t *data) {
+void display_image(int x, const uint8_t *data) {
 	int i, j;
 	
-	for(i = page; i < 4; i++) {
+	for(i = 0; i < 4; i++) {
 		DISPLAY_CHANGE_TO_COMMAND_MODE;
 
 		spi_send_recv(0x22);
@@ -158,10 +158,9 @@ void display_image(int x, int page, const uint8_t *data) {
 		spi_send_recv(0x10 | ((x >> 4) & 0xF));
 		
 		DISPLAY_CHANGE_TO_DATA_MODE;
-		if (i == page) 
-		  for(j = 0; j < 128; j++) {
-            spi_send_recv(data[i*128+j]); //INVERSION OF DATA 
-      }
+		for(j = 0; j < 128; j++) {
+      spi_send_recv(data[i*128+j]); //INVERSION OF DATA 
+    }
 			
 	}
 }
