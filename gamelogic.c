@@ -69,21 +69,7 @@ void start_game()
     //Step 5: Delay
 
 
-    if(getbtns() & 0b100)
-		{
-      jump();   
-    }
-
-    if(getbtns() & 0b010)
-		{
-      //function for running
-    }
-
-    if(getbtns() & 0b001)
-		{
-      //function for shooting
-    }
-
+    
   }
 }
 
@@ -116,29 +102,9 @@ void init_game()
   GAME.score = 0;
 }
 
-void update_Shrek()
-{
-  if(GAME.running)
-  {
-    if(SHREK.x > 0)
-      SHREK.x--;
-    else
-      SHREK.x = 150;  
-
-    if(STAIR.x > 0)
-    {
-      STAIR.x --;
-      GROUND.x--;
-    }
-    else
-      STAIR.x = 170;
-      GROUND.x =170;
-  }
-}
-
 
 void jump()
-{
+{//sorin
   /*if (!GAME.jumping)
   {
     GAME.jumping = 1;
@@ -159,23 +125,4 @@ void jump()
   }*/
 
   
-    int i,j;
-
-    for (j = 0; j < 8; j++)
-  {
-        for ( i = 0; i < 128; i++) 
-        {
-            spi_send_recv((doodle[i] >> j) | ground[i]);
-        }
-
-    delay(1);
-    new_display_image(0,2);
-    for ( i = 0; i < 128; i++) 
-        {
-            spi_send_recv((doodle[i] ) );
-        }
-    //spi_send_recv((" ") );
-    //new_display_image(3);
-
-  }
 }

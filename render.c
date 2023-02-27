@@ -3,7 +3,8 @@
 #include "declarations.h"  /* Declatations for these labs */
 
 
-void gamemap () {
+void gamemap () 
+{
   //  display_init();
     int i,j;
     while(1)

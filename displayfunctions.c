@@ -160,7 +160,7 @@ void display_image(int x, int page, const uint8_t *data) {
 		DISPLAY_CHANGE_TO_DATA_MODE;
 		if (i == page) 
 		  for(j = 0; j < 128; j++) {
-            spi_send_recv(data[j]); //INVERSION OF DATA 
+            spi_send_recv(data[i*128+j]); //INVERSION OF DATA 
       }
 			
 	}
@@ -279,31 +279,6 @@ char * itoaconv( int num )
   /* Since the loop always sets the index i to the next empty position,
    * we must add 1 in order to return a pointer to the first occupied position. */
   return( &itoa_buffer[ i + 1 ] );
-}
-
-//new functions
-void new_display_image(int x,int page) {
-	int i, j;
-	
-	for(i = 0; i < 4; i++) {
-		
-    if(i == page ) {
-    DISPLAY_CHANGE_TO_COMMAND_MODE;
- 
-		spi_send_recv(0x22);
-		spi_send_recv(i);
-		
-		spi_send_recv(x & 0xF);
-		spi_send_recv(0x10 | ((x >>4) & 0xF));
-		
-	  DISPLAY_CHANGE_TO_DATA_MODE;
-      
-   }
-
-  // for(j = 0; j < 128; j++)
-	//	spi_send_recv(data[i*32+ j]);
-    
-  }
 }
 
 void print_empty_screen() { 
