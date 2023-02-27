@@ -58,11 +58,17 @@ void initports( void ) //called once
 void start_game()
 {
   init_game();
+  int i ;
+  for (i = 0; i < 128; i++)
+  {
+    display[3][i]= ground[i];
+  }
+  
   
   while (GAME.running)
   {
     //Step 1: read inputs
-    if(getbtns() & 0b100 && GAME.jumping!=1)
+    if((getbtns() & 0b100 )&& GAME.jumping!=1)
 		{
 			GAME.jumping = 1;
 		}

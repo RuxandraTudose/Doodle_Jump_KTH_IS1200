@@ -5,7 +5,7 @@
 
 void gamemap () 
 {
-  int page, col, i;
+  int page, col, i, j;
 	for(page = 0; page < 4; page++)
   {
 		for(col = 0; col < 128; col++)
@@ -14,31 +14,54 @@ void gamemap ()
       {
         case 0:
         {
-
+            display[page][col] = 0x00;
+            break;
         }
+        
         case 1:
         {
-
+        
+            display[page][col] = 0x00;
+            break;
         }
+        
         case 2:
         {
-
+           display[page][col] = 0x00;
+           break;
         }
         case 3:
         {
           
           if((GAME.jumping == 0) && col == DOODLE.x)
           {
-            for(i = 0; i < DOODLE.WIDTH; i++)
-              spi_send_recv(ground[col] | doodle[i]);
+            for(i = 0; i < DOODLE.WIDTH; i++) {
+              //spi_send_recv(ground[i] | doodle[i]);
+              display[page][col+i]= (ground[i] | doodle[i]); 
+            }
+            col+=DOODLE.WIDTH;
+            
           }
           else
-            spi_send_recv(ground[col]);
-
+            display[page][col]= ground[col];
+            
+            //spi_send_recv(ground[col]);
+            break;
         }
       }
     }
   }
-  
 
+ for ( i = 0; i < 4; i++)
+ {
+    display_image(0, i, display[i]); 
+ }
+ 
+  
+  
+  
+  
+ delay(1);
+ //quicksleep(10);   
+ GAME.jumping = 0;
 }

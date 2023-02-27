@@ -8,7 +8,7 @@
    For copyright and licensing, see file COPYING */
 
 /* Declare display-related functions from displayfuncions.c */
-void display_image(int x, const uint8_t *data);
+void display_image(int x, int y, uint8_t *data);
 void display_init(void);
 void display_string(int line, char *s);
 void display_update(void);
@@ -82,7 +82,7 @@ const uint8_t const stair[128];
 const uint8_t const shrek[128];
 const uint8_t const ground[128];
 const uint8_t const no_ground[128];
-uint8_t display[4][128];
+ uint8_t display[4][128];
 
 //menu
 void start_screen();
