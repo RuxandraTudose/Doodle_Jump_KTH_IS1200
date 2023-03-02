@@ -2,14 +2,8 @@
 #include <pic32mx.h>
 #include "mipslab.h"
 
-int getsw(void);
-int getbtns(void); 
 
-int getsw() {
-
-    int value = (PORTD >> 8) & 0xf; //implicit zero extension with andi
-    return value;
-}
+int getbtns(void);  //written for lab 3
 
 int getbtns() {
 

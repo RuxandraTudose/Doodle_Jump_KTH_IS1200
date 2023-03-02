@@ -37,9 +37,11 @@ void display_debug( volatile int * const addr );
 
 /* Declare bitmap array containing font */
 extern const uint8_t const font[128*8];
-extern const uint8_t const doodle[16];
-extern const uint8_t const erase[16];
-extern uint8_t Screen[512]; //128*4
+extern const uint8_t const doodle[10];
+extern const uint8_t const erase[10];
+extern uint8_t Screen[512]; //128 columns * 4 pages
+extern uint8_t  Start_screen[512] ;
+extern const uint8_t const coin[3];
 
 /* Declare text buffer for display output */
 extern char textbuffer[4][16];
@@ -55,3 +57,29 @@ void time2string( char *, int );
 int getbtns(void);
 int getsw(void);
 void enable_interrupt(void);
+
+void check_level();
+void update_screen_level();
+void print_empty_screen();
+void check_coins();
+void change_coins();
+void restartscreen();
+void update_obstacle();
+void jump();
+void moveright();
+
+
+typedef struct COIN
+{
+  int x;
+  int page;
+  int check;
+} COIN;
+
+COIN coin1;
+COIN coin2;
+COIN coin3;
+
+
+
+

@@ -8,6 +8,8 @@
 #include <pic32mx.h>  /* Declarations of system-specific addresses etc */
 #include "mipslab.h"  /* Declatations for these labs */
 
+////////////////////////////FROM LAB 3//////////////////////////////////
+
 /* Declare a helper function which is local to this file */
 static void num32asc( char * s, int ); 
 
@@ -89,15 +91,17 @@ void display_debug( volatile int * const addr )
   display_update();
 }
 
-uint8_t spi_send_recv(uint8_t data) {
+uint8_t spi_send_recv(uint8_t data) 
+{
 	while(!(SPI2STAT & 0x08));
 	SPI2BUF = data;
 	while(!(SPI2STAT & 1));
 	return SPI2BUF;
 }
 
-void display_init(void) {
-        DISPLAY_CHANGE_TO_COMMAND_MODE;
+void display_init(void) 
+{
+  DISPLAY_CHANGE_TO_COMMAND_MODE;
 	quicksleep(10);
 	DISPLAY_ACTIVATE_VDD;
 	quicksleep(1000000);
@@ -126,7 +130,8 @@ void display_init(void) {
 	spi_send_recv(0xAF);
 }
 
-void display_string(int line, char *s) {
+void display_string(int line, char *s) 
+{
 	int i;
 	if(line < 0 || line >= 4)
 		return;
@@ -141,7 +146,8 @@ void display_string(int line, char *s) {
 			textbuffer[line][i] = ' ';
 }
 
-void display_image(int x, const uint8_t *data) {
+void display_image(int x, const uint8_t *data) 
+{
 	int i, j;
 	
 	for(i = 0; i < 4; i++) {
@@ -156,11 +162,12 @@ void display_image(int x, const uint8_t *data) {
 		DISPLAY_CHANGE_TO_DATA_MODE;
 		
 		for(j = 0; j < 128; j++)
-			spi_send_recv(data[i*128 + j]);
+			spi_send_recv(data[i*128 + j]); //we made two changes here : removed '~' and replaced 32 with 128 to go through all columns
 	}
 }
 
-void display_update(void) {
+void display_update(void) 
+{
 	int i, j, k;
 	int c;
 	for(i = 0; i < 4; i++) {
@@ -275,61 +282,77 @@ char * itoaconv( int num )
   return( &itoa_buffer[ i + 1 ] );
 }
 
-void print_empty_screen() { 
-  
+
+////////////////////////////OUR OWN FUNCTIONS//////////////////////////////////
+
+void print_empty_screen() //Oleksandra
+{ 
   int j;
   for (j = 0; j < 4; j++) {
-    display_string(j, "                ");
-    display_update();
+    display_string(j, "                 "); //maximum 16 characters per page
+    display_update(); //always use display_update after display_string
   }
 }
 
-void moveright(int col){
+void moveright(int col) //Oleksandra
+{
     int i;
-    
-        for(i = 0; i < 10; i++){
-         Screen[(128 * 3) + i + col] = doodle[i]; 
-         Screen[(128 * 3) + i + col - 10] = erase[i];
-         
-        }
 
-    display_image(0, Screen);
+    for(i = 0; i < 10; i++)
+    {
+      Screen[(128 * 3) + i + col] = doodle[i] | 0x80;//move Doodle to right
+                                                     //bitwise or is needed to print ground with doodle and not just overlap it
+
+      if(col >= 10) //10 - width of Doodle, if col >= 10 we need to clean previous 10 pixels
+        Screen[(128 * 3) + i + col - 10] = erase[i] | 0x80;//cleen space where Doodle was before
+                                                           //bitwise or is needed to print ground and not overlap it
+      else if(i < col)// else means that col < 10 and we clean i pixels while i < 10
+        Screen[(128 * 3) + i ] = erase[i] | 0x80;
+    } 
+    display_image(0, Screen);//display full screen with the new changes 
     delay(300);
 }
 
-void jump(int col) {
-   
+void jump(int col) //Ruxandra
+{
     int j;
-
     // Jump up
-    for (j = 0; j < 10; j++) {
-      Screen[128 * 2 + j + col - 1] = doodle[j];
-      Screen[128 * 3 + j + col - 1] = erase[j];
+    for (j = 0; j < 10; j++) 
+    {
+      Screen[128 * 2 + j + col - 1] = doodle[j]; //print doodle pon second page
+      Screen[128 * 3 + j + col - 1] = erase[j] | 0x80; //delete doodle on third page and leave ground
+    }
+      
+    display_image(0, Screen); //display full screen with the new changes 
+    delay (100);
+
+    // Jump down
+    for (j = 0; j < 10; j++) 
+    {
+        Screen[j + (128 * 3) + col - 1] = doodle[j] | 0x80; //print doodle on third page and leave ground
+        Screen[j + (128 * 2) + col - 1] = erase[j]; //delete doodle from second page
     }
     
-  
-    display_image(0, Screen);
+    display_image(0, Screen); //display full screen with the new changes 
     delay (100);
+    
+}
 
-	// Jump down
-    for (j = 0; j < 10; j++) {
-            Screen[j + (128 * 3) + col - 1] = doodle[j];
-            Screen[j + (128 * 2) + col - 1] = erase[j];
-    }
-   
-    display_image(0, Screen); 
-    delay (100);
+void restartscreen() //Ruxandra
+{
+  int i, j;
+  for (i = 2; i < 4; i++) //go through pages 2 and 3 separately (we need ground from Start_screen)
+    for(j = 0; j < 128; j++)
+      Screen[i*128 +j] = Start_screen[i*128 +j];
 
+  for (i = 0; i < 2; i++) //go through pages 0 and 1 (no ground - just reinitialize with zero)
+    for(j = 0; j < 128; j++)
+      Screen[i*128 +j] = 0;
 }
 
 
-void restartscreen() {
-    int i;
-    for (i = 0; i < 1024; i++) { //4096/44 = 1024 pixels in one page //512*2
-        Screen[i] = 0;
-    }
-    display_image(0, Screen);
-}
 
-//1024 pixels in one page 
+
+
+
 

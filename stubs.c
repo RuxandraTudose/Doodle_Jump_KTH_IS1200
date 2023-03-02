@@ -5,6 +5,9 @@
  * For copyright and licensing, see file COPYING */
 
 /* Non-Maskable Interrupt; something bad likely happened, so hang */
+
+////////////////////////////FROM LAB 3//////////////////////////////////
+
 void _nmi_handler() {
 	for(;;);
 }

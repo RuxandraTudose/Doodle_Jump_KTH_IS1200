@@ -1,0 +1,63 @@
+Group 13 (Ruxandra-Stefania Tudose & Bilovus Oleksandra) : Doodle Jump (game)
+
+
+In the attached archive, the files for our mini-project for the course IS1200 can be found.
+
+Description of the game:
+
+Game character: Doodle
+Character's skills: move right and jump
+Number of game levels: 3 (numbered from zero to two)
+Goal: Doodle should catch as many coins as possible
+Score count: the LED's will light up in binary the number of coins that have been caught up until the game is over
+
+Instruction on how to use our project:
+
+a) As far as the hardware components are concerned, one ChipKIT Uno32 is needed, that has to be connected with one ChipKIT Basic I/O.
+b) As far as software is concerned, MCB32 tools, C programming language, Assembly and Makefile have been used.
+
+Hardware instructions:
+
+On the ChipKIT, identify the buttons and the index below them. After the code has been loaded in the ChipKIt, press on the following:
+
+a) Press on BTN2 to Start the game
+b) Press on BTN3 to move Doodle to right and BTN4 to make it jump
+c) After you finish a level, wait for the next one to be loaded (no need to press any button)
+d) Go through b) and c) again to finish all levels  
+e) When you reach level 2, press on BTN4 to bring the coins closer to Doodle: the coins that are up will come down and vice versa 
+f) After you finish level two, the game will end
+g) Press on BTN2 to restart the game (no need to disconnect ChipKIT)
+
+
+Software description: (the files)
+
+mipslabmain.c:
+	Contains the entry point main()
+	
+mipslabdata.c:
+	Contains in hexadecimal, the pixel by pixel drawing of the objects in the game: the screen (two types), Doodle, the coin and the erase. In addition, it also has the font used for the strings.
+	
+mipslabfunc.c:
+	Contains the functions for the Doodle's movement and for the reinitialisation of the screen (both strings and objects).
+	
+mipslabwork.c:
+	As far as hardware is concerned, it contains functions that initialize the ChipKIT's ports (buttons, LED's, timer and interrupts).
+	As far as software is concerned, it contains functions that manage the game's logic, the control of the different levels, the distribution of the coins on the screen and the repsitioning of the coins in level 2 (see point e) in Hardware instructions above).		
+	
+time4io.c:
+	Contains the function that extracts the binary values in order to then check which buttons are pressed.
+	
+mipslab.h:
+	Contains all function and variable declarations used in the project.
+			
+stubs.c:
+	Contains stubs for functions run during micro controller
+	initialization	
+	
+labwork.s:
+	Contains functions written in Assembly for the delay and the enble innterrupt.	
+
+vectors.S:
+	Contains the interrupt handler and the exception handler
+
+
